@@ -4,10 +4,11 @@ package main
 import (
 	"FeelGoodInc/games/blackjack"
 	"FeelGoodInc/games/minesweeper"
+	//"FeelGoodInc/games/tictactoe"
 	//"fmt"
 	"FeelGoodInc/internal/ui"
 	//"FeelGoodInc/styles"
-    "FeelGoodInc/internal/utils"
+	"FeelGoodInc/internal/utils"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -21,7 +22,8 @@ import (
 xadrez
 craps
 batalha naval
-roleta
+Jogo da velha - multplayer local
+roleta -> Ok
 truco - local deve ser legal
 liars dice
 horse race
@@ -41,12 +43,15 @@ func main() {
 	}
 	result, _ := tea.NewProgram(m).Run()
 	finalState := result.(ui.FirstState)
-    utils.ClearTerminal()
-    utils.SkipLine()
+	utils.ClearTerminal()
+	utils.SkipLine()
 	switch finalState.Opc {
 	case 0:
 		blackjack.Play()
 	case 1:
 		minesweeper.Play()
+
+	case 2:
+		//tictactoe.Play()
 	}
 }
