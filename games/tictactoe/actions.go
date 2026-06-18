@@ -10,22 +10,29 @@ type tictactoe struct {
 }
 
 func (t *tictactoe) PrintBoard() {
-	fmt.Printf("%s|%s|%s\n", t.matrix[0][0], t.matrix[0][1], t.matrix[0][2])
-	fmt.Printf("%s|%s|%s\n", t.matrix[1][0], t.matrix[1][1], t.matrix[1][2])
-	fmt.Printf("%s|%s|%s\n", t.matrix[2][0], t.matrix[2][1], t.matrix[2][2])
+	fmt.Printf("%s | %s | %s\n", t.matrix[0][0], t.matrix[0][1], t.matrix[0][2])
+	fmt.Println("──┼───┼──")
+	fmt.Printf("%s | %s | %s\n", t.matrix[1][0], t.matrix[1][1], t.matrix[1][2])
+	fmt.Println("──┼───┼──")
+	fmt.Printf("%s | %s | %s\n", t.matrix[2][0], t.matrix[2][1], t.matrix[2][2])
 }
 func (t *tictactoe) GameLoop() {
+	t.PrintBoard()
 	for t.IsThereSpace() {
 		x, y := getInput()
 		for t.matrix[x][y] != " " {
-			println("Not possible to make this move! Try other:\n")
+			fmt.Println("Not possible to make this move! Try other:")
+			x, y = getInput()
+		}
+		for x < 1 || x > 3 || y < 1 || y > 3 {
+			fmt.Println("Invalid input, numbers must be between 1 and 3")
 			x, y = getInput()
 		}
 		if won, name := t.SomeoneWon(); won {
 			fmt.Printf("%s ganhou!\n", name)
 			return
-        }
-        t.switchPlayer()
+		}
+		t.switchPlayer()
 	}
 
 }
@@ -113,5 +120,5 @@ func getInput() (int, int) {
 		return getInput()
 	}
 
-	return x + 1, y + 1
+	return x - 1, y - 1
 }

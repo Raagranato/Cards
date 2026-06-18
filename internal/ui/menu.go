@@ -1,6 +1,8 @@
 package ui
 
 import (
+
+
 	//"fmt"
 	// "FeelGoodInc/games/blackjack"
 	// "FeelGoodInc/games/minesweeper"
@@ -29,6 +31,8 @@ func (m FirstState) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if(m.Opc == 0){
 				return m, tea.Quit
 			}else if(m.Opc == 1){
+				return m, tea.Quit
+			}else if(m.Opc == 2){
 				return m, tea.Quit
 			}
 		case "up":

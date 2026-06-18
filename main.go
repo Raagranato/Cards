@@ -4,7 +4,7 @@ package main
 import (
 	"FeelGoodInc/games/blackjack"
 	"FeelGoodInc/games/minesweeper"
-	//"FeelGoodInc/games/tictactoe"
+	"FeelGoodInc/games/tictactoe"
 	//"fmt"
 	"FeelGoodInc/internal/ui"
 	//"FeelGoodInc/styles"
@@ -39,7 +39,7 @@ func main() {
 	ui.Welcome()
 
 	m := ui.FirstState{
-		Choices: []string{"Blackjack", "Minesweeper"},
+		Choices: []string{"Blackjack", "Minesweeper","Tictactoe"},
 	}
 	result, _ := tea.NewProgram(m).Run()
 	finalState := result.(ui.FirstState)
@@ -50,8 +50,7 @@ func main() {
 		blackjack.Play()
 	case 1:
 		minesweeper.Play()
-
 	case 2:
-		//tictactoe.Play()
+		tictactoe.Play()
 	}
 }
