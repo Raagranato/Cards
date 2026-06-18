@@ -39,7 +39,7 @@ func main() {
 	ui.Welcome()
 
 	m := ui.FirstState{
-		Choices: []string{"Blackjack", "Minesweeper","Tictactoe"},
+		Choices: []string{"Blackjack", "Minesweeper", "Tictactoe"},
 	}
 	result, _ := tea.NewProgram(m).Run()
 	finalState := result.(ui.FirstState)

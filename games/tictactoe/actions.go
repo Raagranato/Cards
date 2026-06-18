@@ -20,21 +20,28 @@ func (t *tictactoe) GameLoop() {
 	t.PrintBoard()
 	for t.IsThereSpace() {
 		x, y := getInput()
-		for t.matrix[x][y] != " " {
-			fmt.Println("Not possible to make this move! Try other:")
-			x, y = getInput()
-		}
-		for x < 1 || x > 3 || y < 1 || y > 3 {
+		for x < 0 || x > 2 || y < 0 || y > 2 {
 			fmt.Println("Invalid input, numbers must be between 1 and 3")
 			x, y = getInput()
 		}
+		for t.matrix[x][y] != " " {
+			fmt.Println("Not possible to make this move! Try other:")
+			x, y = getInput()
+			for x < 0 || x > 2 || y < 0 || y > 2 {
+				fmt.Println("Invalid input, numbers must be between 1 and 3")
+				x, y = getInput()
+			}
+		}
+		t.matrix[x][y] = t.player
+		t.PrintBoard()
 		if won, name := t.SomeoneWon(); won {
 			fmt.Printf("%s ganhou!\n", name)
 			return
 		}
+
 		t.switchPlayer()
 	}
-
+	fmt.Println("Draw!")
 }
 func (t *tictactoe) IsThereSpace() bool {
 	for _, row := range t.matrix {
@@ -45,7 +52,6 @@ func (t *tictactoe) IsThereSpace() bool {
 		}
 	}
 	return false
-
 }
 
 func (t *tictactoe) SomeoneWon() (bool, string) {
@@ -120,5 +126,5 @@ func getInput() (int, int) {
 		return getInput()
 	}
 
-	return x - 1, y - 1
+	return y - 1, x - 1
 }
