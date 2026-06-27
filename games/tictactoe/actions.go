@@ -2,6 +2,8 @@ package tictactoe
 
 import (
 	"fmt"
+	"net"
+	"FeelGoodInc/network"
 )
 
 type tictactoe struct {
@@ -56,58 +58,26 @@ func (t *tictactoe) IsThereSpace() bool {
 
 func (t *tictactoe) SomeoneWon() (bool, string) {
 
-	// Linhas Horizontais (O)
-	if t.matrix[0][0] == "O" && t.matrix[0][1] == "O" && t.matrix[0][2] == "O" {
-		return true, "O"
-	} else if t.matrix[1][0] == "O" && t.matrix[1][1] == "O" && t.matrix[1][2] == "O" {
-		return true, "O"
-	} else if t.matrix[2][0] == "O" && t.matrix[2][1] == "O" && t.matrix[2][2] == "O" {
-		return true, "O"
-	}
-
-	// Colunas Verticais (O)
-	if t.matrix[0][0] == "O" && t.matrix[1][0] == "O" && t.matrix[2][0] == "O" {
-		return true, "O"
-	} else if t.matrix[0][1] == "O" && t.matrix[1][1] == "O" && t.matrix[2][1] == "O" {
-		return true, "O"
-	} else if t.matrix[0][2] == "O" && t.matrix[1][2] == "O" && t.matrix[2][2] == "O" {
-		return true, "O"
-	}
-
-	// Diagonais (O)
-	if t.matrix[0][0] == "O" && t.matrix[1][1] == "O" && t.matrix[2][2] == "O" {
-		return true, "O"
-	} else if t.matrix[0][2] == "O" && t.matrix[1][1] == "O" && t.matrix[2][0] == "O" {
-		return true, "O"
-	}
-
-	// Linhas Horizontais (X)
-	if t.matrix[0][0] == "X" && t.matrix[0][1] == "X" && t.matrix[0][2] == "X" {
-		return true, "X"
-	} else if t.matrix[1][0] == "X" && t.matrix[1][1] == "X" && t.matrix[1][2] == "X" {
-		return true, "X"
-	} else if t.matrix[2][0] == "X" && t.matrix[2][1] == "X" && t.matrix[2][2] == "X" {
-		return true, "X"
-	}
-
-	// Colunas Verticais (X)
-	if t.matrix[0][0] == "X" && t.matrix[1][0] == "X" && t.matrix[2][0] == "X" {
-		return true, "X"
-	} else if t.matrix[0][1] == "X" && t.matrix[1][1] == "X" && t.matrix[2][1] == "X" {
-		return true, "X"
-	} else if t.matrix[0][2] == "X" && t.matrix[1][2] == "X" && t.matrix[2][2] == "X" {
-		return true, "X"
-	}
-
-	// Diagonais (X)
-	if t.matrix[0][0] == "X" && t.matrix[1][1] == "X" && t.matrix[2][2] == "X" {
-		return true, "X"
-	} else if t.matrix[0][2] == "X" && t.matrix[1][1] == "X" && t.matrix[2][0] == "X" {
-		return true, "X"
-	}
-
-	// no winners
-	return false, " "
+	for _, p := range []string{"X", "O"} {
+        // linhas
+        for i := 0; i < 3; i++ {
+            if t.matrix[i][0] == p && t.matrix[i][1] == p && t.matrix[i][2] == p {
+                return true, p
+            }
+            // colunas
+            if t.matrix[0][i] == p && t.matrix[1][i] == p && t.matrix[2][i] == p {
+                return true, p
+            }
+        }
+        // diagonais
+        if t.matrix[0][0] == p && t.matrix[1][1] == p && t.matrix[2][2] == p {
+            return true, p
+        }
+        if t.matrix[0][2] == p && t.matrix[1][1] == p && t.matrix[2][0] == p {
+            return true, p
+        }
+    }
+    return false, " "
 }
 
 func (t *tictactoe) switchPlayer() {
@@ -128,3 +98,30 @@ func getInput() (int, int) {
 
 	return y - 1, x - 1
 }
+
+func (t *tictactoe)GameLoopOnline(con net.Conn, host bool){
+
+}
+
+func PlayOnline(host bool, ip string) {
+    game := tictactoe{
+        matrix: [3][3]string{
+            {" ", " ", " "},
+            {" ", " ", " "},
+            {" ", " ", " "},
+        },
+        player: "X",
+    }
+
+    var conn net.Conn
+    if host {
+        conn = network.StartHost(":8080")
+        game.player = "X"
+    } else {
+        conn = network.Connect(ip)
+        game.player = "O"
+    }
+
+    game.GameLoopOnline(conn, host)
+}
+
